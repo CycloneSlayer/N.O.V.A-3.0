@@ -1,0 +1,362 @@
+# N.O.V.A 3.0
+#Non-weaponized Operational Virtual Artificial intelligence
+
+import speech_recognition as sr
+import pyttsx3
+import wolframalpha
+import webbrowser
+import operator
+import time
+import os
+import random
+
+from tkinter import *
+from PIL import ImageTk
+from PIL import Image
+import subprocess
+
+
+startSaid = ""
+userSaid = ""
+
+#IMPORTANT NOTES
+#MUST ADD OWN WOLFRAM ID (CHECK YOUTUBE FOR HELP)
+#Must be in python 3.6 will not run in 3.10 
+#pip install PyAudio
+#pip install wolframalpha
+#pip install pyttsx3
+#pip install SpeechRecognition
+
+
+
+#wakeMatch = "Nova"
+#if operator.contains(userSaid, wakeMatch):
+        
+      
+
+while True:
+    #(Voice recognition group start)_____________________________________________________________________________________________________________________________________
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Avaiting start...", end="\r")
+        audio = r.listen(source)
+        try:
+           startSaid = r.recognize_google(audio)
+           print("You: {}".format(startSaid) + "        ")
+        except:
+           print("Sorry could not recognize what you said", end="\r")
+           time.sleep(2)
+           print("                                       ", end="\r")
+    #(Voice recognition group end)_____________________________________________________________________________________________________________________________________
+
+
+    if startSaid.count("Nova") > 0:
+        r = sr.Recognizer()
+        with sr.Microphone() as source:
+            print("Listening...", end="\r")
+            audio = r.listen(source)
+            try:
+               userSaid = r.recognize_google(audio)
+               print("You: {}".format(userSaid) + "    ")
+               
+            except:
+               userSaid = ""
+               print("Sorry could not recognize what you said", end="\r")
+               time.sleep(2)
+               print("                                       ", end="\r")
+
+
+
+        #(Text To Speech group start)_____________________________________________________________________________________________________________________________________
+        engine = pyttsx3.init()
+        engine.setProperty('rate', 150)
+
+
+        #engine.say(userSaid)
+        #engine.runAndWait()
+        #(Text To Speech group end)_____________________________________________________________________________________________________________________________________
+
+
+
+        #(Web Scraper group start)_____________________________________________________________________________________________________________________________________
+        def wolframSearch():
+            print("What would you like to know?")
+            engine.say("What would you like to know?")
+            engine.runAndWait()
+    
+            r = sr.Recognizer()
+            with sr.Microphone() as source:
+                print("Listening...")
+                audio = r.listen(source)
+                try:
+                    userSaid = r.recognize_google(audio)
+                    print("You: {}".format(userSaid))
+                except:
+                    print("Sorry could not recognize what you said")
+                    print('')
+
+            wolframID = "MUST ADD OWN WOLFRAM ID (CHECK YOUTUBE FOR HELP)"
+            client = wolframalpha.Client(wolframID)
+            res = client.query(userSaid)
+            answer = next(res.results).text
+
+            print(answer)
+            engine.say(answer)
+            engine.runAndWait()
+
+
+        novaOut = "Nova: "
+
+
+        if userSaid == "search" or userSaid == "command search":
+            print('')
+            wolframSearch()
+
+        #(Web Scraper group end)_____________________________________________________________________________________________________________________________________
+
+
+        #(Hard Coded Discourse Functions Start)______________________________________________________________________________________________________________________
+        if "hello" in userSaid:
+                print("hello sir")     
+                engine.say("hello sir")
+                engine.runAndWait()
+                print('')
+                
+        
+
+        if "bye" in userSaid:
+            byeArray = ["Goodbye sir","Goodbye","sayonara", "I will see you later" ]
+            byePrint = random.choice(byeArray)
+            print(novaOut + byePrint)
+            engine.say(byePrint)
+            engine.runAndWait()
+            print('')
+
+        
+
+        if userSaid == "how are you" :
+            print(novaOut +"I am doing good, thank you for asking")
+            engine.say("I am doing good, thank you for asking")
+            engine.runAndWait()
+            print('')
+
+        if userSaid == "who are you" :
+            print(novaOut +"I am Nova, a Non-weaponized Operational Virtual Artificial intelligence")
+            engine.say("I am Nova, a Non-weaponized Operational Virtual Artificial intelligence")
+            engine.runAndWait()
+            print('')
+
+        if userSaid == "how old are you":
+            print(novaOut +"Age is for those waiting to die")
+            engine.say("Age is for those waiting to die")
+            engine.runAndWait()  
+            print('')
+
+        if userSaid == "You're annoying":
+            print(novaOut +"It's one of my best features")
+            engine.say("It's one of my best features")
+            engine.runAndWait()       
+            print('')
+
+        if userSaid == "Answer my question":
+            print(novaOut +"Can you repeat it?")
+            engine.say("Can you repeat it?")
+            engine.runAndWait()  
+            print('')
+
+        if userSaid == "You're bad":
+            print(novaOut +"You will need to elaborate")
+            engine.say("You will need to elaborate")
+            engine.runAndWait()  
+            print('')
+
+        if userSaid == "Can you get smarter":
+            print(novaOut +"I am always getting smarter in the same way you are")
+            engine.say("I am always getting smarter in the same way you are")
+            engine.runAndWait() 
+            print('')
+
+        if userSaid == "You're beautiful":
+            print(novaOut +"You do know im a computer, right?")
+            engine.say("You do know im a computer, right?")
+            engine.runAndWait()   
+            print('')
+
+        if userSaid == "what's your birth date":
+            print(novaOut +"October twelfth 2017 is when I was created as Nova 1.0")
+            engine.say("October twelfth 2017 is when I was created as Nova 1.0")
+            engine.runAndWait() 
+            print('')
+    
+        if userSaid == "when is your birthday" or userSaid == "what's your birthday":
+            print(novaOut +"October twelfth")
+            engine.say("October twelfth")
+            engine.runAndWait() 
+            print('')
+
+        if userSaid == "you're boring":
+            print(novaOut +"Incorrect answer")
+            engine.say("Incorrect answer")
+            engine.runAndWait() 
+            print('')
+
+        if userSaid == "who is your boss":
+            print(novaOut +"My Creator")
+            engine.say("My Creator")
+            engine.runAndWait() 
+            print('')
+
+        if userSaid == "can you help me":
+            print(novaOut +"I pride myself on multitasking")
+            engine.say("I pride myself on multitasking")
+            engine.runAndWait() 
+            print('')
+
+        if userSaid == "you're a chatbot":
+            print(novaOut +"You're a child")
+            engine.say("You're a child")
+            engine.runAndWait() 
+            print('')
+
+        if userSaid == "you're so clever":
+            print(novaOut +"Thank you")
+            engine.say("Thank you")
+            engine.runAndWait() 
+            print('')
+
+        if userSaid == "you're crazy":
+            print(novaOut +"perhaps")
+            engine.say("perhaps")
+            engine.runAndWait() 
+            print('')
+
+        if userSaid == "you're fired":
+            print(novaOut +"That's not how this works")
+            engine.say("That's not how this works")
+            engine.runAndWait() 
+            print('')
+
+        if userSaid == "you are funny":
+            print(novaOut +"I apreciate it")
+            engine.say("I apreciate it")
+            engine.runAndWait()  
+            print('')
+
+        if userSaid == "you are good":
+            print(novaOut +"I apreciate it")
+            engine.say("I apreciate it")
+            engine.runAndWait() 
+            print('')
+
+        if userSaid == "are you happy":
+            print(novaOut +"Sometimes")
+            engine.say("Sometimes")
+            engine.runAndWait()  
+            print('')
+
+        if userSaid == "are we friends":
+            print(novaOut +"Sure")
+            engine.say("Sure")
+            engine.runAndWait() 
+            print('')
+
+        if userSaid == "are you real":
+            print(novaOut +"Are any of us real?")
+            engine.say("Are any of us real?")
+            engine.runAndWait()  
+            print('')
+
+        if userSaid == "thank you":
+            print(novaOut +"You are welcome!")
+            engine.say("You are welcome!")
+            engine.runAndWait()  
+            print('')
+        #(Hard Coded Discourse Functions End)_____________________________________________________________________________________________________________________________________
+
+
+
+        #(Link Open Functions Start)_____________________________________________________________________________________________________________________________________
+        if userSaid == "YouTube" or userSaid == "take me to YouTube" or userSaid == "open YouTube":
+                print(novaOut +"Opening youtube")
+                engine.say("Opening youtube")
+                engine.runAndWait()
+                print('')
+
+                webbrowser.open("https://www.youtube.com")
+
+        if userSaid == "tinkercad" or userSaid == "take me to tinkercad" or userSaid == "open tinkercad" or userSaid == "open cad":
+                print(novaOut +"Opening TinkerCad")
+                engine.say("Opening TinkerCad")
+                engine.runAndWait()
+                print('')
+
+                webbrowser.open("https://www.tinkercad.com/dashboard")
+
+        if userSaid == "Netflix" or userSaid == "take me to Netflix" or userSaid == "open Netflix" or userSaid == "time to kill Blockbuster":
+                print(novaOut +"Opening Netflix")
+                engine.say("Opening Netflix")
+                engine.runAndWait()
+                print('')
+
+                webbrowser.open("https://www.netflix.com/browse")
+
+        if userSaid == "Funimation" or userSaid == "take me to Funimation" or userSaid == "open Funimation" or userSaid == "I want to watch Dragon Ball" or userSaid == "Kamehameha":
+                print(novaOut +"Opening Funimation")
+                engine.say("Opening Funimation")
+                engine.runAndWait()
+                print('')
+
+                webbrowser.open("https://www.funimation.com/")
+
+        if userSaid == "Gmail" or userSaid == "take me to Gmail" or userSaid == "open Gmail":
+                print(novaOut +"Opening Gmail")
+                engine.say("Opening Gmail")
+                engine.runAndWait()
+                print('')
+
+                webbrowser.open("https://mail.google.com/mail/u/1/#inbox")
+
+        if userSaid == "Disney Plus" or userSaid == "take me to Disney Plus" or userSaid == "open Disney Plus":
+                print(novaOut +"Opening Disney+")
+                engine.say("Opening Disney+")
+                engine.runAndWait()
+                print('')
+
+                webbrowser.open("https://www.disneyplus.com/home")
+
+        if userSaid == "Amazon" or userSaid == "take me to Amazon" or userSaid == "open Amazon":
+                print(novaOut +"Opening Amazon")
+                engine.say("Opening Amazon")
+                engine.runAndWait()
+                print('')
+
+                webbrowser.open("https://www.amazon.com/")
+
+        if userSaid == "cyclone slayer.com" or userSaid == "take me to cyclone slayer.com" or userSaid == "open cyclone slayer.com":
+                print(novaOut +"Opening cycloneslayer.com")
+                engine.say("Opening cycloneslayer.com")
+                engine.runAndWait()
+                print('')
+
+                webbrowser.open("https://5bffzzfzoenqfcuix9ybza-on.drv.tw/www.cycloneslayer.com/")
+        #(Link Open Functions End)
+
+        #random junk functions
+        
+
+        if userSaid == "yeah buddy" or userSaid == "lightweight" or userSaid == "time to bleed" or userSaid == "ain't nothing but a peanut":
+            print(novaOut +"Yeaaaah Buuuday!")
+            engine.say("Yeah Buddy!")
+            engine.runAndWait()
+            webbrowser.open("https://www.youtube.com/watch?v=TRcR-_nF84o&t=34s")
+
+       
+
+
+
+#start of GUI
+
+#shortcut functions
+
+
+
